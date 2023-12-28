@@ -1,7 +1,7 @@
-@model IEnumerable<FerozLeisureHub.Domain.Entities.Villa>
+@model IEnumerable<FerozLeisureHub.Domain.Entities.VillaNumber>
 
 <div class="container mt-4">
-   <div class="card-header bg-success bg-gradient ml-0 py-3">
+    <div class="card-header bg-success bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
                 <h2 class="text-white py-2">Villa List</h2>
@@ -11,20 +11,19 @@
     <div class="card-body border p-4">
         <div class="row pb-3">
             <div class="col-6 offset-6 text-end">
-                <a asp-controller="Villa" asp-action="Create" class="btn btn-secondary">
-                    <i class="bi bi-plus-circle"></i> Create New Villa
+                <a asp-controller="VillaNumber" asp-action="Create" class="btn btn-secondary">
+                    <i class="bi bi-plus-circle"></i> Create New Villa Number
                 </a>
             </div>
         </div>
-
-            <div class="table-responsive">
+        <div class="card-body p-4">
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Sqft</th>
-                            <th>Occupancy</th>
+                            <th>Villa Name</th>
+                            <th>Villa Number</th>
+                            <th>Special Details</th>
                             <th>Action</th> <!-- New column for Update and Delete buttons -->
                         </tr>
                     </thead>
@@ -32,18 +31,19 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.Name</td>
-                                <td>@item.Price</td>
-                                <td>@item.Sqft</td>
-                                <td>@item.Occupancy</td>
+                                <td>@item.Villa.Name</td>
+                                <td>@item.Villa_Number</td>
+                                <td>@item.SpecialDetails</td>
                                 <td>
                                     <!-- Update button with Bootstrap icon and styling -->
-                                    <a asp-controller="Villa" asp-action="Update" asp-route-villaid="@item.Id" class="btn btn-success mx-2">
+                                    <a asp-controller="VillaNumber" asp-action="Update"
+                                        asp-route-villaNumberid="@item.Villa_Number" class="btn btn-success mx-2">
                                         <i class="bi bi-pencil"></i> Edit
                                     </a>
-                                    
+
                                     <!-- Delete button with Bootstrap icon and styling -->
-                                    <a asp-controller="Villa" asp-action="Delete" asp-route-villaid="@item.Id" class="btn btn-danger mx-2">
+                                    <a asp-controller="VillaNumber" asp-action="Delete"
+                                        asp-route-villaNumberid="@item.Villa_Number" class="btn btn-danger mx-2">
                                         <i class="bi bi-trash"></i> Delete
                                     </a>
                                 </td>
