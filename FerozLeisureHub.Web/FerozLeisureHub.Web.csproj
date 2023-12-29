@@ -26,4 +26,7 @@
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot/VillaImage/" />
+  </ItemGroup>
 </Project>

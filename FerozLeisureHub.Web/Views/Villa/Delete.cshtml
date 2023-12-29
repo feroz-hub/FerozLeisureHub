@@ -1,62 +1,67 @@
 @model Villa
-<style>
-    .blur {
-        filter: blur(1px); /* You can adjust the blur amount as needed */
-    }
-</style>
-<div class="container mt-4">
-    <div class="card border-0">
-        <div class="card-header bg-danger bg-gradient">
-            <div class="row">
-                <div class="col-10 text-center">
-                    <h2 class="text-white py-2">Delete Villa</h2>
-                </div>
-                <div class="col-2 text-end">
-                    <a asp-controller="Villa" asp-action="Index" class="btn btn-secondary">
-                        <i class="bi bi-arrow-left"></i> Back to List
-                    </a>
-                </div>
+
+<div class="w-100 card border-0 p-4">
+    <div class="card-header bg-success bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Delete Villa</h2>
             </div>
         </div>
-        <div class="card-body p-4">
-            <form method="post" asp-controller="Villa" asp-action="Delete" id="deleteForm">
-                <input type="hidden" asp-for="Id" />
-
-                <div class="form-floating mb-3">
-                    <input asp-for="Name" class="form-control border shadow blur" placeholder="Villa Name" disabled />
-                    <label asp-for="Name">Villa Name</label>
+    </div>
+    <div class="card-body border p-4">
+        <form method="post" class="row">
+            <input asp-for="Id" hidden />
+            <div class="col-10">
+            <div class="p-2">
+                @* <div asp-validation-summary="All"></div> *@
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Name" disabled class="form-control border shadow" />
+                    <label asp-for="Name" class="ms-2"></label>
                 </div>
-
-                <div class="form-floating mb-3">
-                    <input asp-for="Description" class="form-control border shadow blur" placeholder="Description" disabled />
-                    <label asp-for="Description">Description</label>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Description" disabled class="form-control border shadow" />
+                    <label asp-for="Description" class="ms-2"></label>
                 </div>
-
-                <div class="form-floating mb-3">
-                    <input asp-for="Price" class="form-control border shadow blur" placeholder="Price" disabled />
-                    <label asp-for="Price">Price</label>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Price" disabled class="form-control border shadow" />
+                    <label asp-for="Price" class="ms-2"></label>
                 </div>
-
-                <div class="form-floating mb-3">
-                    <input asp-for="Sqft" class="form-control border shadow blur" placeholder="Sqft" disabled />
-                    <label asp-for="Sqft">Sqft</label>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Sqft" disabled class="form-control border shadow" />
+                    <label asp-for="Sqft" class="ms-2"></label>
                 </div>
-
-                <div class="form-floating mb-3">
-                    <input asp-for="Occupancy" class="form-control border shadow blur" placeholder="Occupancy" disabled />
-                    <label asp-for="Occupancy">Occupancy</label>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Occupancy" disabled class="form-control border shadow" />
+                    <label asp-for="Occupancy" class="ms-2"></label>
                 </div>
-
-                <div class="form-floating mb-3">
-                    <input asp-for="ImageUrl" class="form-control border shadow blur" placeholder="Image URL" disabled />
-                    <label asp-for="ImageUrl">Image URL</label>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="ImageUrl" disabled class="form-control border shadow" />
+                    <label asp-for="ImageUrl" class="ms-2"></label>
                 </div>
-
-                <div class="text-center">
-                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Delete</button>
-                    <a asp-controller="Villa" asp-action="Index" class="btn btn-secondary mx-2"><i class="bi bi-x-circle"></i> Cancel</a>
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-danger w-100">
+                            <i class="bi bi-trash-fill"></i> Delete
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Villa" asp-action="Index" class="btn btn-secondary w-100">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </div>
                 </div>
-            </form>
-        </div>
+            </div>
+            </div>
+            <div class="col-2">
+                <img src="@Model.ImageUrl" width="100%"
+                     style="border-radius:5px; border:1px solid #bbb9b9" />
+            </div>
+        </form>
     </div>
 </div>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

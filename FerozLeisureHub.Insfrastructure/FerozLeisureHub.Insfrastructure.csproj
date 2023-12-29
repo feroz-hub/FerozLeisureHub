@@ -26,6 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FerozLeisureHub.Domain\FerozLeisureHub.Domain.csproj" />
+    <ProjectReference Include="..\FerozLeisureHub.Application\FerozLeisureHub.Application.csproj" />
     
 
   </ItemGroup>
