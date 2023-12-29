@@ -1,29 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+using FerozLeisureHub.Application;
 using FerozLeisureHub.Domain.Entities;
-using FerozLeisureHub.Insfrastructure.Data;
 using FerozLeisureHub.Web.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-
 namespace FerozLeisureHub.Web.Controllers
 {
 
     public class VillaNumberController : Controller
     {
-        private readonly ApplicationDbContext _dbContext;
-        public VillaNumberController(ApplicationDbContext dbContext)
+       private readonly IUnitOfWork _unitOfWork;
+        public VillaNumberController( IUnitOfWork unitOfWork)
         {
-            _dbContext = dbContext;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            var villaNumbers = _dbContext.VillaNumbers.Include(u => u.Villa).ToList();
+            var villaNumbers = _unitOfWork.VillaNumber.GetAll(includeProperties:"Villa");
             return View(villaNumbers);
         }
 
@@ -31,7 +23,7 @@ namespace FerozLeisureHub.Web.Controllers
         {
             VillaNumberVM villaNumberVM = new()
             {
-                VillaList = _dbContext.Villas.ToList().Select(x => new SelectListItem
+                VillaList = _unitOfWork.Villa.GetAll().Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id.ToString()
@@ -43,25 +35,21 @@ namespace FerozLeisureHub.Web.Controllers
         [HttpPost]
         public IActionResult Create(VillaNumberVM obj)
         {
-            bool isVillaNumberExists =obj.VillaNumber !=null &&  _dbContext.VillaNumbers.Any(v => v.Villa_Number == obj.VillaNumber.Villa_Number);
+            bool isVillaNumberExists =obj.VillaNumber !=null &&  _unitOfWork.VillaNumber.Any(v => v.Villa_Number == obj.VillaNumber.Villa_Number);
 
             // ModelState.Remove("Villa");
             if (ModelState.IsValid && !isVillaNumberExists)
             {
-
-
-                _dbContext.VillaNumbers.Add(obj.VillaNumber);
-                _dbContext.SaveChanges();
+                _unitOfWork.VillaNumber.Add(obj.VillaNumber);
+                _unitOfWork.Save();
                 TempData["success"] = "Villa Number has been Created successfully.";
                 return RedirectToAction("Index");
             }
             if (isVillaNumberExists)
             {
                 TempData["error"] = "Villa number already exists";
-
-
             }
-            obj.VillaList = _dbContext.Villas.ToList().Select(x => new SelectListItem
+            obj.VillaList =  _unitOfWork.Villa.GetAll().Select(x => new SelectListItem
             {
                 Text = x.Name,
                 Value = x.Id.ToString()
@@ -73,39 +61,32 @@ namespace FerozLeisureHub.Web.Controllers
         {
             VillaNumberVM villaNumberVM = new()
             {
-                VillaList = _dbContext.Villas.ToList().Select(x => new SelectListItem
+                VillaList = _unitOfWork.Villa.GetAll().Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id.ToString()
                 }),
-                VillaNumber = _dbContext.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumberId)
+                VillaNumber = _unitOfWork.VillaNumber.Get(u => u.Villa_Number == villaNumberId)
 
             };
             if (villaNumberVM.VillaNumber == null)
             {
                 return RedirectToAction("Error", "Home");
             }
-
             return View(villaNumberVM);
         }
 
         [HttpPost]
         public IActionResult Update(VillaNumberVM villaNumberVM)
         {
-            //bool isVillaNumberExists= _dbContext.VillaNumbers.Any(v=>v.Villa_Number==  obj.VillaNumber.Villa_Number);
-
-            // ModelState.Remove("Villa");
             if (ModelState.IsValid)
             {
-
-
-                _dbContext.VillaNumbers.Update(villaNumberVM.VillaNumber);
-                _dbContext.SaveChanges();
+                _unitOfWork.VillaNumber.Update(villaNumberVM.VillaNumber);
+                _unitOfWork.Save();
                 TempData["success"] = "Villa Number has been Updated successfully.";
                 return RedirectToAction(nameof(Index)); 
             }
-
-            villaNumberVM.VillaList = _dbContext.Villas.ToList().Select(x => new SelectListItem
+            villaNumberVM.VillaList = _unitOfWork.Villa.GetAll().Select(x => new SelectListItem
             {
                 Text = x.Name,
                 Value = x.Id.ToString()
@@ -117,44 +98,34 @@ namespace FerozLeisureHub.Web.Controllers
         {
             VillaNumberVM villaNumberVM = new()
             {
-                VillaList = _dbContext.Villas.ToList().Select(x => new SelectListItem
+                VillaList = _unitOfWork.Villa.GetAll().Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id.ToString()
                 }),
-                VillaNumber = _dbContext.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumberId)
+                VillaNumber = _unitOfWork.VillaNumber.Get(u => u.Villa_Number == villaNumberId)
 
             };
             if (villaNumberVM.VillaNumber == null)
             {
                 return RedirectToAction("Error", "Home");
             }
-
             return View(villaNumberVM);
         }
         [HttpPost]
         public IActionResult Delete(VillaNumberVM villaNumberVM )
         {
-            VillaNumber? villafromdb = _dbContext.VillaNumbers
-            .FirstOrDefault(u => u.Villa_Number == villaNumberVM.VillaNumber.Villa_Number);
+            VillaNumber? villafromdb = _unitOfWork.VillaNumber.Get(u => u.Villa_Number == villaNumberVM.VillaNumber.Villa_Number);
 
             if (villafromdb is not null)
             {
-                _dbContext.VillaNumbers.Remove(villafromdb);
-                _dbContext.SaveChanges();
+                _unitOfWork.VillaNumber.Remove(villafromdb);
+                _unitOfWork.Save();
                 TempData["success"] = "The Villa numbers has been Deleted successfully";
                 return RedirectToAction("Index");
             }
             TempData["error"] = "The Villa number could not be deleted.";
             return View();
-
-
         }
-
-
-
-
-
-
     }
 }

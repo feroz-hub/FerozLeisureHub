@@ -1,58 +1,60 @@
 @model Villa
 
-<div class="card border-0">
-    <div class="card-header bg-success bg-gradient">
+<div class="w-100 card border-0 p-4">
+    <div class="card-header bg-success bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
                 <h2 class="text-white py-2">Create Villa</h2>
-            </div>
+            </div> 
         </div>
     </div>
     <div class="card-body border p-4">
-        <form method="post">
-             <!-- Display ModelState errors in a validation summary -->
-
-             @* <div asp-validation-summary="All" class="text-danger"></div> *@
-            <div class="form-floating mb-3">
-                <input asp-for="Name" class="form-control border shadow" placeholder="Villa Name" />
-                <label asp-for="Name">Villa Name</label>
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-
-            <!-- Repeat similar form field structure for other properties (Description, Price, Sqft, Occupancy, ImageUrl) -->
-            <div class="form-floating mb-3"> 
-                <input asp-for="Description" class="form-control border shadow" placeholder="Description" />
-                <label asp-for="Description">Description</label>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-
-            <div class="form-floating mb-3">
-                <input asp-for="Price" class="form-control border shadow" placeholder="Price" />
-                <label asp-for="Price">Price</label>
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-
-            <div class="form-floating mb-3">
-                <input asp-for="Sqft" class="form-control border shadow" placeholder="Sqft" />
-                <label asp-for="Sqft">Sqft</label>
-                <span asp-validation-for="Sqft" class="text-danger"></span>
-            </div>
-
-            <div class="form-floating mb-3">
-                <input asp-for="Occupancy" class="form-control border shadow" placeholder="Occupancy" />
-                <label asp-for="Occupancy">Occupancy</label>
-                <span asp-validation-for="Occupancy" class="text-danger"></span>
-            </div>
-
-            <div class="form-floating mb-3">
-                <input asp-for="ImageUrl" class="form-control border shadow" placeholder="Image URL" />
-                <label asp-for="ImageUrl">Image URL</label>
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-            </div>
-
-            <div class="text-center">
-                <button type="submit" class="btn btn-Secondary">Create</button>
-                <a asp-controller="Villa" asp-action="Index" class="btn btn-secondary">Cancel</a>
+        <form method="post" class="row" enctype="multipart/form-data">
+            <div class="p-3">
+                @* <div asp-validation-summary="All"></div>  *@
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Name" class="form-control border shadow" />
+                    <label asp-for="Name" class="ms-2"></label>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Description" class="form-control border shadow" />
+                    <label asp-for="Description" class="ms-2"></label>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Price" class="form-control border shadow" />
+                    <label asp-for="Price" class="ms-2"></label>
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Sqft" class="form-control border shadow" />
+                    <label asp-for="Sqft" class="ms-2"></label>
+                    <span asp-validation-for="Sqft" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Occupancy" class="form-control border shadow" />
+                    <label asp-for="Occupancy" class="ms-2"></label>
+                    <span asp-validation-for="Occupancy" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="ImageUrl" hidden class="form-control border shadow" />
+                    <input asp-for="Image" class="form-control border shadow" />
+                    <label asp-for="ImageUrl" class="ms-2 "></label>
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-check-circle"></i> Create
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Villa" asp-action="Index" class="btn btn-secondary w-100">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
@@ -60,7 +62,6 @@
 
 @section Scripts{
     @{
-        <partial name="_ValidationScriptsPartial"/>
+        <partial name="_ValidationScriptsPartial" />
     }
 }
- 

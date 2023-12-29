@@ -1,4 +1,8 @@
-﻿using FerozLeisureHub.Insfrastructure.Data;
+﻿using FerozLeisureHub.Application;
+using FerozLeisureHub.Application.Common.Interfaces;
+using FerozLeisureHub.Insfrastructure;
+using FerozLeisureHub.Insfrastructure.Data;
+using FerozLeisureHub.Insfrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +12,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
 var app = builder.Build();
 
