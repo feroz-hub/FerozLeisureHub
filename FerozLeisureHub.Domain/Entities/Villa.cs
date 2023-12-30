@@ -27,6 +27,9 @@ namespace FerozLeisureHub.Domain.Entities
         [ValidateNever]
         public IEnumerable<Amenity> VillaAmenity { get; set; }
 
+        [NotMapped]
+        public bool IsAvaliable { get; set; }=true;
+
 
     }
 }

@@ -1,9 +1,10 @@
 ﻿using FerozLeisureHub.Application;
-using FerozLeisureHub.Application.Common.Interfaces;
+using FerozLeisureHub.Domain.Entities;
 using FerozLeisureHub.Insfrastructure;
 using FerozLeisureHub.Insfrastructure.Data;
-using FerozLeisureHub.Insfrastructure.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using FerozLeisureHub.Insfrastructure.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,19 +15,31 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+builder.Services.AddIdentity<ApplicationUser,IdentityRole>()
+
+.AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddApplicationServices();
+builder.Services.ConfigureApplicationCookie(option=>{
+    option.AccessDeniedPath ="/Account/AccessDenied";
+     option.LoginPath="/Account/Login";
+});
+builder.Services.Configure<IdentityOptions>(option=>{
+    option.Password.RequiredLength=6;
+    option.Password.RequireUppercase = true;
+    option.Password.RequireLowercase = true;
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles(); 
 
 app.UseRouting();
 

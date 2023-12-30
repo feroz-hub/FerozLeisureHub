@@ -5,17 +5,13 @@ using FerozLeisureHub.Insfrastructure.Data;
 
 namespace FerozLeisureHub.Insfrastructure;
 
-public class AmenityRepository :Repository<Amenity>, IAmenityRepository
+public class AmenityRepository(ApplicationDbContext dbContext) : Repository<Amenity>(dbContext), IAmenityRepository
 {
 
-    private readonly ApplicationDbContext _dbContext;
-    public AmenityRepository(ApplicationDbContext dbContext):base(dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    //private readonly ApplicationDbContext _dbContext = dbContext;
 
     public void Update(Amenity amenity )
     {
-        _dbContext.Amenities.Update(amenity);
+        dbContext.Amenities.Update(amenity);
     }
 }

@@ -1,21 +1,21 @@
 using FerozLeisureHub.Application;
+using FerozLeisureHub.Application.Common.Utility;
 using FerozLeisureHub.Domain.Entities;
 using FerozLeisureHub.Web.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 namespace FerozLeisureHub.Web.Controllers
 {
 
-    public class AmenityController : Controller
+[Authorize(Roles =SD.Role_Admin)]
+    public class AmenityController(IUnitOfWork unitOfWork) : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public AmenityController(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        //private readonly IUnitOfWork unitOfWork = unitOfWork;
+
         public IActionResult Index()
         {
-            var amenities = _unitOfWork.Amenity.GetAll(includeProperties: "Villa");
+            var amenities = unitOfWork.Amenity.GetAll(includeProperties: "Villa");
             return View(amenities);
         }
 
@@ -23,7 +23,7 @@ namespace FerozLeisureHub.Web.Controllers
         {
             AmenityVM amenityVM = new()
             {
-                VillaList = _unitOfWork.Villa.GetAll().Select(x => new SelectListItem
+                VillaList = unitOfWork.Villa.GetAll().Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id.ToString()
@@ -38,13 +38,13 @@ namespace FerozLeisureHub.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Amenity.Add(obj.Amenity);
-                _unitOfWork.Save();
+                unitOfWork.Amenity.Add(obj.Amenity);
+                unitOfWork.Save();
                 TempData["success"] = "Amenity has been Created successfully.";
                 return RedirectToAction("Index");
             }
 
-            obj.VillaList = _unitOfWork.Villa.GetAll().Select(x => new SelectListItem
+            obj.VillaList = unitOfWork.Villa.GetAll().Select(x => new SelectListItem
             {
                 Text = x.Name,
                 Value = x.Id.ToString()
@@ -56,12 +56,12 @@ namespace FerozLeisureHub.Web.Controllers
         {
             AmenityVM amenityVM = new()
             {
-                VillaList = _unitOfWork.Villa.GetAll().Select(x => new SelectListItem
+                VillaList = unitOfWork.Villa.GetAll().Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id.ToString()
                 }),
-                Amenity = _unitOfWork.Amenity.Get(u => u.Id == amenityId)
+                Amenity = unitOfWork.Amenity.Get(u => u.Id == amenityId)
 
             };
             if (amenityVM.Amenity == null)
@@ -76,12 +76,12 @@ namespace FerozLeisureHub.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Amenity.Update(amenityVm.Amenity);
-                _unitOfWork.Save();
+                unitOfWork.Amenity.Update(amenityVm.Amenity);
+                unitOfWork.Save();
                 TempData["success"] = "Amenity has been Updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
-            amenityVm.VillaList = _unitOfWork.Villa.GetAll().Select(x => new SelectListItem
+            amenityVm.VillaList = unitOfWork.Villa.GetAll().Select(x => new SelectListItem
             {
                 Text = x.Name,
                 Value = x.Id.ToString()
@@ -93,12 +93,12 @@ namespace FerozLeisureHub.Web.Controllers
         {
             AmenityVM amenityVM = new()
             {
-                VillaList = _unitOfWork.Villa.GetAll().Select(x => new SelectListItem
+                VillaList = unitOfWork.Villa.GetAll().Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id.ToString()
                 }),
-                Amenity = _unitOfWork.Amenity.Get(u => u.Id == amenityId)
+                Amenity = unitOfWork.Amenity.Get(u => u.Id == amenityId)
 
             };
             if (amenityVM.Amenity == null)
@@ -114,12 +114,12 @@ namespace FerozLeisureHub.Web.Controllers
             {
                 return RedirectToAction("Error", "Home");
             }
-            Amenity? amenity = _unitOfWork.Amenity.Get(u => u.Id == amenityVM.Amenity.Id);
+            Amenity? amenity = unitOfWork.Amenity.Get(u => u.Id == amenityVM.Amenity.Id);
 
             if (amenity is not null)
             {
-                _unitOfWork.Amenity.Remove(amenity);
-                _unitOfWork.Save();
+                unitOfWork.Amenity.Remove(amenity);
+                unitOfWork.Save();
                 TempData["success"] = "The Amenitys has been Deleted successfully";
                 return RedirectToAction("Index");
             }

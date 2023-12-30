@@ -4,17 +4,13 @@ using FerozLeisureHub.Insfrastructure.Data;
 
 namespace FerozLeisureHub.Insfrastructure;
 
-public class VillaNumberRepository :Repository<VillaNumber>, IVillaNumberRepository
+public class VillaNumberRepository(ApplicationDbContext dbContext) : Repository<VillaNumber>(dbContext), IVillaNumberRepository
 {
 
-    private readonly ApplicationDbContext _dbContext;
-    public VillaNumberRepository(ApplicationDbContext dbContext):base(dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly ApplicationDbContext _dbContext = dbContext;
 
     public void Update(VillaNumber villaNumber)
     {
-        _dbContext.VillaNumbers.Update(villaNumber);
+        dbContext.VillaNumbers.Update(villaNumber);
     }
 }
