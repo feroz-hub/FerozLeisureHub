@@ -23,9 +23,6 @@
     <None Remove="Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\FerozLeisureHub.Domain\FerozLeisureHub.Domain.csproj" />
     <ProjectReference Include="..\FerozLeisureHub.Application\FerozLeisureHub.Application.csproj" />
     
